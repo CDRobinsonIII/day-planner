@@ -7,7 +7,9 @@ $("#currentDay").text(moment().format("dddd, MMMM Do"));
 function retrieveStoredTask (timeBlockTask) {
 
     // Declare var to local storage item.
-    var timeBlockData = localStorage.getItem(timeBlockTask);
+    var timeBlockTaskId = `task${timeBlockTask}`;
+    console.log("This is the task id in retrieved stored data: " + timeBlockTaskId)
+    var timeBlockData = localStorage.getItem(timeBlockTaskId);
 
     // See if there is data in the local storage for the timeBlockTask.
     // If there is data, then display it in the text area for that time block.
@@ -15,7 +17,7 @@ function retrieveStoredTask (timeBlockTask) {
 
         // Grab the task id (with a template literal) which is attached to the <textarea>.
         // After grabbing the task id set the value .text() to the task in the local storage.
-        $(`#task${timeBlockTask}`).text(timeBlockData)
+        $(`#${timeBlockTaskId}`).text(timeBlockData)
     }  
 
 }
@@ -24,7 +26,7 @@ function retrieveStoredTask (timeBlockTask) {
 function createTimeBlocks () {
 
     // Create a for Loop to run through the 9 different time blocks for the day planner. Start with 9AM (09), end with 5PM (17).
-    for (i = 9; i <18; i++) {
+    for (i = 0; i <9; i++) {
 
         // Create a row (aka time block) to contain the three columns of data for the time block. There will be 9 different rows. 
         // Each row needs to have an id stating the row they are, based off of the iterator i starting at 9 for (9am).
@@ -43,7 +45,7 @@ function createTimeBlocks () {
         // The second column is the text area to hold the task for that hour.
         // The task id created will be use to display the task text from local storage.
 
-        columnTaskBlock = $('<textarea>').addClass('col-md-9 description p-0 past').attr('id', `task${i}`);
+        columnTaskBlock = $('<textarea>').addClass('col-md-10 description p-0 past').attr('id', `task${i}`);
         // console.log("The task id attribute is: " + columnTaskBlock.val());
 
         // The third column is the save button to save the task to local storage. 
@@ -57,6 +59,7 @@ function createTimeBlocks () {
         // Append the row to the container 
         $('.container').append(row);
 
+        console.log("This the current task id " + `task${i}`);
         retrieveStoredTask (i);
         
     }
@@ -64,8 +67,28 @@ function createTimeBlocks () {
 
 createTimeBlocks ();
 
-// Create an addEventListener for when user hits the save button for the tasks.
+function storeTask (event) {
+    // event.preventDefault();
+    // this console shows us the this works to grab the button too!!!!!
+    // console.log ("********this",this);
 
+    // Get the data
+    //.sibling helps you traverse vertically
+    var taskText = $(this).siblings(".description").val();
+    console.log("This is the task to be saved: " +taskText);
+        
+    // Get the id too
+    
+    var taskId = $(this).siblings("textarea").attr('id');
+    
+    console.log("This is the task ID of task to be saved: " +taskId);
+
+    // Store the typed in task in local storage. 
+    localStorage.setItem(taskId, taskText);
+}
+
+// Create an addEventListener for when user hits the save button for the tasks.
+$(".saveBtn").on("click",storeTask);
 
 
 
