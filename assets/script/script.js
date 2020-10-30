@@ -102,7 +102,7 @@ function storeTask () {
     // Get the task from the text area that was just entered.
     var taskText = $(this).siblings(".description").val();
         
-    // Get the id of the text area where the task was just typed in.
+    // Get the id of the text area where the task was just typed.
     var taskId = $(this).siblings("textarea").attr('id');
     
     // Store the typed in task in local storage. 
