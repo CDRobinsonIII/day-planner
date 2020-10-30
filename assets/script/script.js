@@ -67,8 +67,36 @@ function createTimeBlocks () {
 
 createTimeBlocks ();
 
-function storeTask (event) {
-    // event.preventDefault();
+// Function to change time slot text area color based on current hour. If present = red (class present); past = gray (class past); future = green (class future).
+function updateTimeBlockColors () {
+
+    // Use the moment object to get() the current hour we are in.
+    var currentDayTime = moment();
+    var currentDayHour = currentDayTime.get("hour");	
+    console.log("The current hour is: " + currentDayHour);
+    
+    // Create a for loop to cycle through all 9 time slots in the time block. Compare time slot time to current time and change color accordingly. 
+
+    for (i = 0; i < 9; i++) {
+
+        var taskTimeSlot = $(`#task${i}`).val();
+
+        if ((i+9)===currentDayHour) {
+            $(`#task${i}`).addClass('present');
+        }
+        else if ((i+9)>currentDayHour) {
+            $(`#task${i}`).addClass('future');
+        }
+        else {
+            $(`#task${i}`).addClass('past');
+        }
+        console.log("The current task to change color is: " +taskTimeSlot);
+    }
+}
+
+updateTimeBlockColors ();
+
+function storeTask () {
     // this console shows us the this works to grab the button too!!!!!
     // console.log ("********this",this);
 
@@ -99,12 +127,7 @@ $(".saveBtn").on("click",storeTask);
 
 
 
-// Use the moment object to get() the current hour we are in.
-// This could be helpful when changing tasks background ground for the past, present, future.
-// Need to confirm what hour format is used, 12 or 24. 
-var currentDayTime = moment();
-var currentDayHour = currentDayTime.get("hour");	
-console.log("The current hour is: " + currentDayHour);
+
 
 // This uses set() to change minutes to 55. 
 // This might be helpful if I were to add a button/input field to have user type in new hour so they can see how the color changes for the tasks if they were in a different part of the day.
