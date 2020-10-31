@@ -75,3 +75,7 @@ textarea{
   font-size: 50px;
   transition: all .3s ease-in-out;
 }
+
+#clear-tasks {
+  display:none;
+}

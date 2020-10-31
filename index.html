@@ -30,13 +30,17 @@
     </header>
     <div class="container">
     
-      <!-- Timeblocks will be dynamically added here via the script.js page, by using DOM manipulation using jQuery -->
+    <!-- Timeblocks will be dynamically added here via the script.js page, by using DOM manipulation using jQuery -->
 
     </div>
-    
-    <br>
-    <br>
 
+    <!-- Added a clear all tasks button. It isn't displayed until the document is ready via the document ready function in the script.js file.-->
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-center m-3">
+        <input class="btn-lg btn-danger" type="submit" value="Clear All Tasks" id="clear-tasks">
+      </div>
+    </div>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./assets/script/script.js"></script>

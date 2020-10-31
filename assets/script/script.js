@@ -20,7 +20,9 @@ function retrieveStoredTask (timeBlockTask) {
         // After grabbing the task id set the value .text() to the task in the local storage.
         $(`#${timeBlockTaskId}`).text(timeBlockData);
     }  
-
+    else {
+        $(`#${timeBlockTaskId}`).text("");
+    }
 }
 
 // Create function to display 9 different time block on the day planner. This will be done by mainpulating the DOM of the index.html page. 
@@ -63,6 +65,7 @@ function createTimeBlocks () {
         retrieveStoredTask (i);
         
     }
+
 }
 
 // Call createTimeBlocks function to generate the time block dynamically on the index.html page.
@@ -78,8 +81,6 @@ function updateTimeBlockColors () {
     // Create a for loop to cycle through all 9 time slots in the time block. Compare time slot time to current time and change color accordingly. 
     for (var i = 0; i < 9; i++) {
 
-        var taskTimeSlot = $(`#task${i}`).val();
-
         // Add 9 to the interator to get the actual time of the time slot. 
         if ((i+9)===currentDayHour) {
             $(`#task${i}`).addClass('present');
@@ -91,6 +92,7 @@ function updateTimeBlockColors () {
             $(`#task${i}`).addClass('past');
         }
     }
+
 }
 
 // Call function to update the colors of the time blocks based on past, present, current.
@@ -109,24 +111,31 @@ function storeTask () {
     localStorage.setItem(taskId, taskText);
 }
 
-// Create an addEventListener for when user hits the save button for the tasks.
+// Function to clear all of the tasks from the day planner for the day.
+function clearTasks () {
+    
+    // Confirm that the user wants to clear the tasks. 
+    var confirmClear = confirm("Are you sure you want to clear all of the tasks for the day?");
+    if (confirmClear) {
+        localStorage.clear();
+        // After the local storage is cleared, I had to clear the time blocks of the task for using this for loop and setting text to "".
+        for (var i = 0; i < 9; i++) {
+            $(`#task${i}`).text("");
+        }
+    }
+    else {
+        return;
+    }   
+}
+
+// Create an addEventListener for when user clicks on the save button for the tasks.
 $(".saveBtn").on("click",storeTask);
 
+// Create an addEventistener for when the user clicks on the clear all task button.
+$("#clear-tasks").on("click",clearTasks);
 
-
-
-
-
-
-
-
-
-
-
-// This uses set() to change minutes to 55. 
-// This might be helpful if I were to add a button/input field to have user type in new hour so they can see how the color changes for the tasks if they were in a different part of the day.
-//Possible 
-
-var newDayTime = moment();
-var newDayMinute = newDayTime.set("minute",55);	
-console.log(newDayMinute.toString());
+// Added the document ready function because my clear all tasks button was briefly showing before the time blocks were generated. 
+// This fixed the issue.
+$(function() {
+    $("#clear-tasks").css("display", "block");
+});
